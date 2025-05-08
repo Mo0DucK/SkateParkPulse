@@ -12,6 +12,8 @@ import FreeParks from "@/pages/free-parks";
 import PaidParks from "@/pages/paid-parks";
 import About from "@/pages/about";
 import ParkDetails from "@/pages/park-details";
+import MusicPlayer from "@/components/ui/music-player";
+import { MusicPlayerProvider } from "@/contexts/music-player-context";
 
 function Router() {
   return (
@@ -29,16 +31,19 @@ function Router() {
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        <div className="flex flex-col min-h-screen">
-          <Navbar />
-          <main className="flex-grow">
-            <Router />
-          </main>
-          <Footer />
-        </div>
-      </TooltipProvider>
+      <MusicPlayerProvider>
+        <TooltipProvider>
+          <Toaster />
+          <div className="flex flex-col min-h-screen">
+            <Navbar />
+            <main className="flex-grow">
+              <Router />
+            </main>
+            <Footer />
+            <MusicPlayer initialVolume={30} />
+          </div>
+        </TooltipProvider>
+      </MusicPlayerProvider>
     </QueryClientProvider>
   );
 }
