@@ -3,8 +3,45 @@ import SEO from "@/components/ui/seo";
 import AdUnit from "@/components/ui/ad-unit";
 
 const About = () => {
+  // Create structured data for the about page
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "AboutPage",
+    "name": "About RadRamps - Our Story and Mission",
+    "description": "The story behind RadRamps and our mission to map every awesome skatepark in America. Learn about our team and how we're building the best skatepark resource.",
+    "url": "https://radramps.com/about",
+    "mainEntity": {
+      "@type": "Organization",
+      "name": "RadRamps",
+      "url": "https://radramps.com",
+      "founder": {
+        "@type": "Person",
+        "name": "Jake",
+        "jobTitle": "Founder"
+      },
+      "member": [
+        {
+          "@type": "Person",
+          "name": "Sarah",
+          "jobTitle": "Content Manager"
+        },
+        {
+          "@type": "Person",
+          "name": "Miguel",
+          "jobTitle": "Community Lead"
+        }
+      ]
+    }
+  };
+
   return (
     <>
+      {/* SEO Component */}
+      <SEO 
+        title="About RadRamps - Our Story and Mission"
+        description="The story behind RadRamps and our mission to map every awesome skatepark in America. Learn about our team and how we're building the best skatepark resource."
+        structuredData={structuredData}
+      />
       {/* Hero Section */}
       <div className="bg-secondary py-12 px-4">
         <div className="container mx-auto">
@@ -57,6 +94,11 @@ const About = () => {
         </div>
       </section>
 
+      {/* Ad Unit after story section */}
+      <div className="container mx-auto px-4 py-4">
+        <AdUnit format="horizontal" slot="8901234567" />
+      </div>
+
       {/* Mission Section */}
       <section className="py-12 px-4 bg-neutral">
         <div className="container mx-auto">
@@ -105,6 +147,11 @@ const About = () => {
           </div>
         </div>
       </section>
+
+      {/* Ad Unit after mission section */}
+      <div className="container mx-auto px-4 py-4">
+        <AdUnit format="horizontal" slot="9012345678" />
+      </div>
 
       {/* Team Section */}
       <section className="py-12 px-4 bg-white">
@@ -188,6 +235,11 @@ const About = () => {
           </p>
         </div>
       </section>
+
+      {/* Ad Unit at page bottom */}
+      <div className="container mx-auto px-4 py-8">
+        <AdUnit format="horizontal" slot="0123456789" />
+      </div>
     </>
   );
 };

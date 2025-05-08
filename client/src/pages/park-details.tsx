@@ -4,6 +4,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { SkateDivider } from "@/components/ui/skate-divider";
 import { formatRating } from "@/lib/utils";
 import { type Skatepark } from "@shared/schema";
+import SEO from "@/components/ui/seo";
+import AdUnit from "@/components/ui/ad-unit";
 
 const ParkDetails = () => {
   const params = useParams<{ id: string }>();
@@ -64,6 +66,42 @@ const ParkDetails = () => {
 
   return (
     <>
+      {/* Add SEO when park data is loaded */}
+      {!isLoading && park && (
+        <SEO
+          title={`${park.name} Skatepark - ${park.city}, ${park.state} | RadRamps`}
+          description={`Visit ${park.name} in ${park.city}, ${park.state}. ${park.isFree ? 'Free admission' : `Admission: ${park.price}`}. Features: ${park.features.slice(0, 3).join(', ')}. ${park.description.substring(0, 120)}...`}
+          structuredData={{
+            "@context": "https://schema.org",
+            "@type": "SportsActivityLocation",
+            "name": park.name,
+            "description": park.description,
+            "image": park.imageUrl,
+            "address": {
+              "@type": "PostalAddress",
+              "streetAddress": park.address,
+              "addressLocality": park.city,
+              "addressRegion": park.state,
+              "addressCountry": "US"
+            },
+            "url": `https://radramps.com/park/${park.id}`,
+            "priceRange": park.isFree ? "Free" : park.price,
+            "aggregateRating": {
+              "@type": "AggregateRating",
+              "ratingValue": formatRating(park.rating),
+              "ratingCount": "25",
+              "bestRating": "5",
+              "worstRating": "1"
+            },
+            "amenityFeature": park.features.map(feature => ({
+              "@type": "LocationFeatureSpecification",
+              "name": feature,
+              "value": true
+            }))
+          }}
+        />
+      )}
+          
       {isLoading || !park ? (
         <div className="container mx-auto py-8 px-4">
           <Skeleton className="h-20 w-3/4 mx-auto mb-8" />
@@ -117,6 +155,11 @@ const ParkDetails = () => {
               alt={park.name} 
               className="w-full h-full object-cover"
             />
+          </div>
+          
+          {/* Ad Unit after image */}
+          <div className="container mx-auto px-4 py-4">
+            <AdUnit format="horizontal" slot="1234567890" />
           </div>
 
           {/* Park Details */}
