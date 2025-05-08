@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
@@ -7,6 +7,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { STATES, PARK_FEATURES } from "@/lib/utils";
 import { insertSkateparkSubmissionSchema } from "@/../../shared/schema";
+import { MapPin, Loader2 } from "lucide-react";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 import SEO from "@/components/ui/seo";
 import AdUnit from "@/components/ui/ad-unit";
@@ -52,6 +54,8 @@ const formSchema = insertSkateparkSubmissionSchema.extend({
 export default function SubmitPark() {
   const { toast } = useToast();
   const [submitted, setSubmitted] = useState(false);
+  const [locationLoading, setLocationLoading] = useState(false);
+  const [locationError, setLocationError] = useState<string | null>(null);
   
   // Form definition
   const form = useForm<z.infer<typeof formSchema>>({

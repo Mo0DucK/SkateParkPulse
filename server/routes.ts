@@ -203,6 +203,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
           rating: 0, // Initial rating
           features: updatedSubmission.features || [],
           isFeatured: false, // New parks are not featured by default
+          latitude: updatedSubmission.latitude || null,
+          longitude: updatedSubmission.longitude || null
         };
         
         await storage.createSkatepark(newSkateparkData);
