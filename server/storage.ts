@@ -7,7 +7,7 @@ import { db } from "./db";
 import { eq, like, or, and, inArray } from "drizzle-orm";
 
 // Extended type with distance property for nearby parks
-interface SkateparkWithDistance extends Skatepark {
+export interface SkateparkWithDistance extends Skatepark {
   distance: number;
 }
 
@@ -24,7 +24,7 @@ export interface IStorage {
   getFeaturedSkateparks(): Promise<Skatepark[]>;
   createSkatepark(skatepark: InsertSkatepark): Promise<Skatepark>;
   searchSkateparks(query: string, state?: string, features?: string[]): Promise<Skatepark[]>;
-  getNearbyParks(latitude: number, longitude: number, radiusInKm?: number): Promise<Skatepark[]>;
+  getNearbyParks(latitude: number, longitude: number, radiusInKm?: number): Promise<SkateparkWithDistance[]>;
   
   // Skatepark submission methods
   getAllSkateparkSubmissions(): Promise<SkateparkSubmission[]>;

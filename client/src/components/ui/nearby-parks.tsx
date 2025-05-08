@@ -10,6 +10,11 @@ import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
 import { type Skatepark } from '@shared/schema';
 
+// Extended type for nearby parks with distance
+interface SkateparkWithDistance extends Skatepark {
+  distance: number;
+}
+
 const NearbyParks = () => {
   const [userLocation, setUserLocation] = useState<{latitude: number, longitude: number} | null>(null);
   const [locationLoading, setLocationLoading] = useState(false);
@@ -17,7 +22,7 @@ const NearbyParks = () => {
   const [searchRadius, setSearchRadius] = useState(25); // Default radius in km
 
   // Fetch nearby parks when user location is set
-  const { data: nearbyParks, isLoading, refetch, isError } = useQuery<Skatepark[]>({
+  const { data: nearbyParks, isLoading, refetch, isError } = useQuery<SkateparkWithDistance[]>({
     queryKey: ['/api/skateparks/nearby', userLocation?.latitude, userLocation?.longitude, searchRadius],
     queryFn: () => {
       if (!userLocation) return Promise.resolve([]);
