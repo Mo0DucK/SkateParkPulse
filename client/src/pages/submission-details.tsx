@@ -188,6 +188,9 @@ export default function SubmissionDetails() {
                     {submission.imageUrl && (
                       <div>
                         <h3 className="text-lg font-semibold mb-2">Image</h3>
+                        <p className="text-sm text-muted-foreground mb-2">
+                          <strong>Important:</strong> Please verify this is a relevant, high-quality image of the actual skatepark.
+                        </p>
                         <div className="relative h-80 w-full overflow-hidden rounded-lg">
                           <img
                             src={submission.imageUrl}
@@ -255,7 +258,12 @@ export default function SubmissionDetails() {
                       <AlertDialogHeader>
                         <AlertDialogTitle>Are you sure?</AlertDialogTitle>
                         <AlertDialogDescription>
-                          This will reject the skatepark submission.
+                          This will reject the skatepark submission. Common reasons for rejection:
+                          <ul className="list-disc list-inside mt-2">
+                            <li>Information is incomplete or inaccurate</li>
+                            <li>The image is not relevant or is low quality</li>
+                            <li>The skatepark doesn't exist or is already in our database</li>
+                          </ul>
                         </AlertDialogDescription>
                       </AlertDialogHeader>
                       <AlertDialogFooter>
@@ -279,6 +287,12 @@ export default function SubmissionDetails() {
                         <AlertDialogTitle>Approve this submission?</AlertDialogTitle>
                         <AlertDialogDescription>
                           This will approve the skatepark submission and add it to the public listing.
+                          <br/><br/>
+                          <strong>Please confirm:</strong>
+                          <ul className="list-disc list-inside mt-2">
+                            <li>All information is accurate and complete</li>
+                            <li>The image is a relevant, high-quality photo of the actual skatepark</li>
+                          </ul>
                         </AlertDialogDescription>
                       </AlertDialogHeader>
                       <AlertDialogFooter>

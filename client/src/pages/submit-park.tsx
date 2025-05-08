@@ -256,7 +256,8 @@ export default function SubmitPark() {
                                 <Input placeholder="https://example.com/skatepark.jpg" {...field} />
                               </FormControl>
                               <FormDescription>
-                                If you have a photo of the park, paste its URL here
+                                Please provide a direct link to an image (JPG, JPEG, PNG, WEBP) showing the park.
+                                Good sources: Unsplash, Pixabay, or personal photos uploaded to image hosting sites.
                               </FormDescription>
                               <FormMessage />
                             </FormItem>
@@ -414,7 +415,7 @@ export default function SubmitPark() {
                     <li>Provide accurate and complete information</li>
                     <li>Only submit real skateparks that currently exist</li>
                     <li>Include as many details as possible about the park's features</li>
-                    <li>If you have a photo URL, please include it</li>
+                    <li>Please include a relevant, high-quality photo of the skatepark</li>
                     <li>We'll review your submission and add it to our database if approved</li>
                     <li>The review process generally takes 1-3 days</li>
                   </ul>
