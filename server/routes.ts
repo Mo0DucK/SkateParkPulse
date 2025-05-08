@@ -40,6 +40,36 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ message: "Failed to fetch paid skateparks" });
     }
   });
+  
+  app.get("/api/skateparks/nearby", async (req, res) => {
+    try {
+      const { latitude, longitude, radius } = req.query;
+      
+      console.log("Nearby parks query:", { latitude, longitude, radius });
+      
+      if (!latitude || !longitude) {
+        return res.status(400).json({ message: "Latitude and longitude are required" });
+      }
+      
+      const lat = parseFloat(latitude as string);
+      const lng = parseFloat(longitude as string);
+      const radiusInKm = radius ? parseFloat(radius as string) : 50; // Default 50km
+      
+      console.log("Parsed coordinates:", { lat, lng, radiusInKm });
+      
+      if (isNaN(lat) || isNaN(lng) || isNaN(radiusInKm)) {
+        return res.status(400).json({ message: "Invalid coordinates or radius" });
+      }
+      
+      const nearbyParks = await storage.getNearbyParks(lat, lng, radiusInKm);
+      console.log(`Found ${nearbyParks.length} nearby parks`);
+      
+      res.json(nearbyParks);
+    } catch (error) {
+      console.error("Error finding nearby skateparks:", error);
+      res.status(500).json({ message: "Failed to find nearby skateparks" });
+    }
+  });
 
   app.get("/api/skateparks/:id", async (req, res) => {
     try {
@@ -86,36 +116,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json(results);
     } catch (error) {
       res.status(500).json({ message: "Search failed" });
-    }
-  });
-
-  app.get("/api/skateparks/nearby", async (req, res) => {
-    try {
-      const { latitude, longitude, radius } = req.query;
-      
-      console.log("Nearby parks query:", { latitude, longitude, radius });
-      
-      if (!latitude || !longitude) {
-        return res.status(400).json({ message: "Latitude and longitude are required" });
-      }
-      
-      const lat = parseFloat(latitude as string);
-      const lng = parseFloat(longitude as string);
-      const radiusInKm = radius ? parseFloat(radius as string) : 50; // Default 50km
-      
-      console.log("Parsed coordinates:", { lat, lng, radiusInKm });
-      
-      if (isNaN(lat) || isNaN(lng) || isNaN(radiusInKm)) {
-        return res.status(400).json({ message: "Invalid coordinates or radius" });
-      }
-      
-      const nearbyParks = await storage.getNearbyParks(lat, lng, radiusInKm);
-      console.log(`Found ${nearbyParks.length} nearby parks`);
-      
-      res.json(nearbyParks);
-    } catch (error) {
-      console.error("Error finding nearby skateparks:", error);
-      res.status(500).json({ message: "Failed to find nearby skateparks" });
     }
   });
 
