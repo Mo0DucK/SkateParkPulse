@@ -12,6 +12,9 @@ import FreeParks from "@/pages/free-parks";
 import PaidParks from "@/pages/paid-parks";
 import About from "@/pages/about";
 import ParkDetails from "@/pages/park-details";
+import SubmitPark from "@/pages/submit-park";
+import AdminDashboard from "@/pages/admin-dashboard";
+import SubmissionDetails from "@/pages/submission-details";
 import MusicPlayer from "@/components/ui/music-player";
 import { MusicPlayerProvider } from "@/contexts/music-player-context";
 
@@ -23,6 +26,9 @@ function Router() {
       <Route path="/paid-parks" component={PaidParks}/>
       <Route path="/about" component={About}/>
       <Route path="/park/:id" component={ParkDetails}/>
+      <Route path="/submit" component={SubmitPark}/>
+      <Route path="/admin" component={AdminDashboard}/>
+      <Route path="/admin/submission/:id" component={SubmissionDetails}/>
       <Route component={NotFound} />
     </Switch>
   );

@@ -51,6 +51,12 @@ const Navbar = () => {
           >
             ABOUT US
           </Link>
+          <Link 
+            href="/submit" 
+            className={`nav-item text-white font-bold hover:text-primary transition-colors ${isActive('/submit') ? 'text-primary' : ''}`}
+          >
+            SUBMIT PARK
+          </Link>
         </div>
         
         <button 
