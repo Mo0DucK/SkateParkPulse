@@ -62,7 +62,6 @@ export default function SubmitPark() {
       isFree: true,
       price: "",
       features: [],
-      status: "pending", // Default status is pending
     },
   });
 

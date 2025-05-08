@@ -98,6 +98,13 @@ const Navbar = () => {
         >
           ABOUT US
         </Link>
+        <Link 
+          href="/submit" 
+          className={`block text-white font-bold hover:bg-secondary hover:text-primary px-4 py-2 transition-colors ${isActive('/submit') ? 'text-primary' : ''}`}
+          onClick={closeMenu}
+        >
+          SUBMIT PARK
+        </Link>
       </div>
     </nav>
   );
