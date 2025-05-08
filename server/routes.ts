@@ -93,6 +93,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const { latitude, longitude, radius } = req.query;
       
+      console.log("Nearby parks query:", { latitude, longitude, radius });
+      
       if (!latitude || !longitude) {
         return res.status(400).json({ message: "Latitude and longitude are required" });
       }
@@ -101,11 +103,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const lng = parseFloat(longitude as string);
       const radiusInKm = radius ? parseFloat(radius as string) : 50; // Default 50km
       
+      console.log("Parsed coordinates:", { lat, lng, radiusInKm });
+      
       if (isNaN(lat) || isNaN(lng) || isNaN(radiusInKm)) {
         return res.status(400).json({ message: "Invalid coordinates or radius" });
       }
       
       const nearbyParks = await storage.getNearbyParks(lat, lng, radiusInKm);
+      console.log(`Found ${nearbyParks.length} nearby parks`);
+      
       res.json(nearbyParks);
     } catch (error) {
       console.error("Error finding nearby skateparks:", error);

@@ -168,7 +168,7 @@ const NearbyParks = () => {
                               </div>
                             </div>
                             <Badge variant="outline" className="ml-auto">
-                              {'distance' in park ? `${(park as any).distance.toFixed(1)} km` : 'Nearby'}
+                              {`${park.distance.toFixed(1)} km`}
                             </Badge>
                           </div>
                         </CardContent>
