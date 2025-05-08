@@ -75,8 +75,28 @@ const FreeParks = () => {
   const isLoaded = !isLoading && !isSearching;
   const isSearchActive = searchParams && (searchParams.has('q') || searchParams.has('state') || searchParams.has('features'));
 
+  // Create structured data for the free skateparks page
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "Free Skateparks in the USA",
+    "description": "Find the best free skateparks across the United States. Perfect for skaters on a budget or anyone looking to shred without spending a dime.",
+    "url": "https://radramps.com/free-parks",
+    "isPartOf": {
+      "@type": "WebSite",
+      "name": "RadRamps - Best Skateparks in the USA",
+      "url": "https://radramps.com"
+    }
+  };
+
   return (
     <>
+      {/* SEO Component */}
+      <SEO 
+        title="Free Skateparks in the USA"
+        description="Find the best free skateparks across the United States. Perfect for skaters on a budget or anyone looking to shred without spending a dime."
+        structuredData={structuredData}
+      />
       {/* Hero Section */}
       <div className="bg-secondary py-12 px-4">
         <div className="container mx-auto">
@@ -92,6 +112,11 @@ const FreeParks = () => {
 
       {/* Search Section */}
       <SearchFilter onSearch={handleSearch} />
+      
+      {/* Ad Unit after search */}
+      <div className="container mx-auto px-4 py-4">
+        <AdUnit format="horizontal" slot="4567890123" />
+      </div>
 
       {/* Parks Listing */}
       <section className="py-12 px-4 bg-neutral">
@@ -162,6 +187,11 @@ const FreeParks = () => {
           </div>
         </div>
       </section>
+
+      {/* Ad Unit after parks listing */}
+      <div className="container mx-auto px-4 py-8">
+        <AdUnit format="horizontal" slot="5678901234" />
+      </div>
     </>
   );
 };

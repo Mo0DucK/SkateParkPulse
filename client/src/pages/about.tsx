@@ -1,4 +1,6 @@
 import { SkateDivider } from "@/components/ui/skate-divider";
+import SEO from "@/components/ui/seo";
+import AdUnit from "@/components/ui/ad-unit";
 
 const About = () => {
   return (

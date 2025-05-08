@@ -5,6 +5,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { SkateDivider } from "@/components/ui/skate-divider";
 import ParkCard from "@/components/ui/park-card";
 import SearchFilter from "@/components/ui/search-filter";
+import SEO from "@/components/ui/seo";
+import AdUnit from "@/components/ui/ad-unit";
 import { type Skatepark } from "@shared/schema";
 import { apiRequest } from "@/lib/queryClient";
 
@@ -73,8 +75,28 @@ const PaidParks = () => {
   const isLoaded = !isLoading && !isSearching;
   const isSearchActive = searchParams && (searchParams.has('q') || searchParams.has('state') || searchParams.has('features'));
 
+  // Create structured data for the paid skateparks page
+  const structuredData = {
+    "@context": "https://schema.org",
+    "@type": "CollectionPage",
+    "name": "Paid Skateparks in the USA",
+    "description": "Discover premium skateparks that offer top-notch facilities, indoor options, and professional-grade features worth every penny.",
+    "url": "https://radramps.com/paid-parks",
+    "isPartOf": {
+      "@type": "WebSite",
+      "name": "RadRamps - Best Skateparks in the USA",
+      "url": "https://radramps.com"
+    }
+  };
+
   return (
     <>
+      {/* SEO Component */}
+      <SEO 
+        title="Paid Skateparks in the USA"
+        description="Discover premium skateparks that offer top-notch facilities, indoor options, and professional-grade features worth every penny."
+        structuredData={structuredData}
+      />
       {/* Hero Section */}
       <div className="bg-secondary py-12 px-4">
         <div className="container mx-auto">
@@ -90,6 +112,11 @@ const PaidParks = () => {
 
       {/* Search Section */}
       <SearchFilter onSearch={handleSearch} />
+      
+      {/* Ad Unit after search */}
+      <div className="container mx-auto px-4 py-4">
+        <AdUnit format="horizontal" slot="6789012345" />
+      </div>
 
       {/* Parks Listing */}
       <section className="py-12 px-4 bg-neutral">
@@ -160,6 +187,11 @@ const PaidParks = () => {
           </div>
         </div>
       </section>
+
+      {/* Ad Unit after parks listing */}
+      <div className="container mx-auto px-4 py-8">
+        <AdUnit format="horizontal" slot="7890123456" />
+      </div>
     </>
   );
 };
