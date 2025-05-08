@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Disallow admin routes
+Disallow: /admin-dashboard
+Disallow: /submission-details
+
+# Sitemaps
+Sitemap: https://radramps.com/sitemap.xml

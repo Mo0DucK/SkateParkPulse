@@ -7,30 +7,66 @@ const About = () => {
   const structuredData = {
     "@context": "https://schema.org",
     "@type": "AboutPage",
-    "name": "About RadRamps - Our Story and Mission",
-    "description": "The story behind RadRamps and our mission to map every awesome skatepark in America. Learn about our team and how we're building the best skatepark resource.",
+    "name": "About RadRamps - Skateboarding Enthusiasts & Community",
+    "description": "The story behind RadRamps and our mission to map every awesome skatepark in America. Learn about our passionate team of skateboarders and how we're building the most comprehensive skatepark resource in the USA.",
     "url": "https://radramps.com/about",
+    "datePublished": "2019-06-15T12:00:00+00:00",
+    "dateModified": "2025-05-08T12:00:00+00:00",
+    "image": "https://pixabay.com/get/g2118497a6ab4c573b1c6839b725e6f852e44a0c9b0be78f0ff891f7d24453dbc4d1e72d36768cdd07506994e2858fab981ec340771c2897ccd6b0cfefed97a22_1280.jpg",
     "mainEntity": {
       "@type": "Organization",
       "name": "RadRamps",
       "url": "https://radramps.com",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://radramps.com/logo.png",
+        "width": "180",
+        "height": "60"
+      },
+      "slogan": "Mapping the best skateparks across America",
+      "description": "RadRamps is a community-driven platform showcasing the best skateparks across the United States, featuring user-submitted recommendations, comprehensive park details, and location-based park discovery.",
+      "foundingDate": "2019-06-15",
+      "email": "info@radramps.com",
       "founder": {
         "@type": "Person",
         "name": "Jake",
-        "jobTitle": "Founder"
+        "jobTitle": "Founder",
+        "description": "Skater since age 12, web developer, and park database obsessive",
+        "image": "https://pixabay.com/get/g1a5af9abcf8f42bffccc5c07cda99ae9ed04c61bc70c22bbfdf12a82b1c6c66f9b6fe60aa41f6ab5a9a0ae40a59f7a68e39ed5c7c93b02d44c8e37c1ea580f92_1280.jpg"
       },
       "member": [
         {
           "@type": "Person",
           "name": "Sarah",
-          "jobTitle": "Content Manager"
+          "jobTitle": "Content Manager",
+          "description": "Former pro skater with an eye for detail and photography skills",
+          "image": "https://pixabay.com/get/ga3d1a8f8bf0a6fc22d0e92b8ef1fd5e17b95c2c3d9ff8d3f8c7dba61f4a01c7dd6bf3e93051d42f7c1ace3e8a2c06dc2_1280.jpg"
         },
         {
           "@type": "Person",
           "name": "Miguel",
-          "jobTitle": "Community Lead"
+          "jobTitle": "Community Lead",
+          "description": "Skatepark advocate and organizer connecting skaters nationwide",
+          "image": "https://pixabay.com/get/gd428fba9c3de9acdb93f90cf3f9a03b51d24c5daf3e04b1bc8c686cb3ab21626e2c62a47cba6e25abfb1b8eeff2c63ebcfb2a6a5ae3ba4b7dd12e4ba3b58af36_1280.jpg"
         }
+      ],
+      "knowsAbout": [
+        "Skateparks",
+        "Skateboarding",
+        "Skate spots",
+        "Skateboarding community",
+        "Skatepark mapping"
+      ],
+      "sameAs": [
+        "https://twitter.com/radramps",
+        "https://www.instagram.com/radramps/",
+        "https://www.facebook.com/radramps"
       ]
+    },
+    "publisher": {
+      "@type": "Organization",
+      "name": "RadRamps",
+      "url": "https://radramps.com"
     }
   };
 
@@ -38,8 +74,30 @@ const About = () => {
     <>
       {/* SEO Component */}
       <SEO 
-        title="About RadRamps - Our Story and Mission"
-        description="The story behind RadRamps and our mission to map every awesome skatepark in America. Learn about our team and how we're building the best skatepark resource."
+        title="About RadRamps - Skateboarding Enthusiasts & Community | Our Story"
+        description="The story behind RadRamps and our mission to map every awesome skatepark in America. Learn about our passionate team of skateboarders and how we're building the most comprehensive skatepark resource in the USA."
+        keywords={[
+          'skateboarding community',
+          'skateboard enthusiasts',
+          'skatepark mapping',
+          'skateboard resource',
+          'skating community',
+          'radramps team',
+          'skateboard advocacy',
+          'skatepark directory creators',
+          'about skateboarding website',
+          'skate park database founders',
+          'skateboard passion project',
+          'skate community builders',
+          'skatepark advocates',
+          'skateboarding mission'
+        ]}
+        ogImage="https://pixabay.com/get/g2118497a6ab4c573b1c6839b725e6f852e44a0c9b0be78f0ff891f7d24453dbc4d1e72d36768cdd07506994e2858fab981ec340771c2897ccd6b0cfefed97a22_1280.jpg"
+        ogType="website"
+        twitterCard="summary_large_image"
+        author="Jake - RadRamps Founder"
+        datePublished="2019-06-15T12:00:00+00:00"
+        dateModified="2025-05-08T12:00:00+00:00"
         structuredData={structuredData}
       />
       {/* Hero Section */}

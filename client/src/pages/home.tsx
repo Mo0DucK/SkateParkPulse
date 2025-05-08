@@ -78,8 +78,30 @@ const Home = () => {
     <>
       {/* SEO Component */}
       <SEO 
-        title="Best Skateparks in the USA"
-        description="Discover the best skateparks across the United States with RadRamps. Find free and paid skateparks with detailed information about features, locations, and ratings."
+        title="Best Skateparks in the USA | Free & Paid Parks Near You | RadRamps"
+        description="Discover the best skateparks across the United States with RadRamps. Find free and paid skateparks with detailed information about features, locations, and ratings. Use our location-based park finder to discover skateparks near you!"
+        keywords={[
+          'skateparks',
+          'usa skateparks',
+          'best skateparks',
+          'free skateparks',
+          'paid skateparks',
+          'skate spots',
+          'skatepark directory',
+          'skateparks near me',
+          'skate locations',
+          'skateparks by state',
+          'find skateparks',
+          'skate park search',
+          'california skateparks',
+          'new york skateparks',
+          'skateboarding',
+          'skateboard parks'
+        ]}
+        ogImage="https://pixabay.com/get/g189d51ed10caead6af49c628963029f5c3522495d50bcbb8994678a1542453a0d3c11980b24681b227b0a1c802784523d6a2a5086dc1af101a68266232f17cee_1280.jpg"
+        ogType="website"
+        twitterCard="summary_large_image"
+        author="RadRamps Team"
         structuredData={structuredData}
       />
       {/* Hero Section */}

@@ -93,8 +93,28 @@ const PaidParks = () => {
     <>
       {/* SEO Component */}
       <SEO 
-        title="Paid Skateparks in the USA"
-        description="Discover premium skateparks that offer top-notch facilities, indoor options, and professional-grade features worth every penny."
+        title="Premium Paid Skateparks in the USA | Professional-Grade Parks | RadRamps"
+        description="Discover premium skateparks that offer top-notch facilities, indoor options, and professional-grade features worth every penny. Find the best paid skate spots with exceptional maintenance and amenities."
+        keywords={[
+          'paid skateparks',
+          'premium skateparks',
+          'professional skateparks',
+          'indoor skateparks',
+          'competition skateparks',
+          'best paid skate parks',
+          'top skateparks with admission fee',
+          'skate training facilities',
+          'professional skate venues',
+          'competition-grade skateparks',
+          'premium skate facilities',
+          'world-class skateparks',
+          'paid skate spots near me',
+          'paid skateboarding venues'
+        ]}
+        ogImage="https://pixabay.com/get/g21d7ccc83b7442524c5061c90392ff21c55539f8a1ea12074951ce54d80b7539e45383a733833a870315762e7b062ce20cd5c376ff58456b46e2b393447246b6_1280.jpg"
+        ogType="website"
+        twitterCard="summary_large_image"
+        author="RadRamps Team"
         structuredData={structuredData}
       />
       {/* Hero Section */}

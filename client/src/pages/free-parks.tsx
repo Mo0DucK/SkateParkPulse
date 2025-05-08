@@ -93,8 +93,28 @@ const FreeParks = () => {
     <>
       {/* SEO Component */}
       <SEO 
-        title="Free Skateparks in the USA"
-        description="Find the best free skateparks across the United States. Perfect for skaters on a budget or anyone looking to shred without spending a dime."
+        title="Free Skateparks in the USA | No Cost Skate Spots | RadRamps"
+        description="Find the best free skateparks across the United States. Perfect for skaters on a budget or anyone looking to shred without spending a dime. Discover community-maintained parks with top-notch features."
+        keywords={[
+          'free skateparks',
+          'no cost skate parks',
+          'free skate spots',
+          'public skateparks',
+          'community skateparks',
+          'free skateboarding locations',
+          'no admission skateparks',
+          'free skate bowls',
+          'free skate ramps',
+          'budget friendly skateparks',
+          'free skate spots near me',
+          'top free skateparks',
+          'best free skateparks usa',
+          'free skate locations by state'
+        ]}
+        ogImage="https://pixabay.com/get/g58357ee2812651c1634b8bf587c7e302d8521b5be94db92052515fa4f236feca9335a01012d8fa9698134ceed3a317a670cfe66da25c3e3056be2452542bf4f7_1280.jpg"
+        ogType="website"
+        twitterCard="summary_large_image"
+        author="RadRamps Team"
         structuredData={structuredData}
       />
       {/* Hero Section */}
