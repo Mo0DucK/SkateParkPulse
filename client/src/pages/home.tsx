@@ -240,6 +240,11 @@ const Home = () => {
         </div>
       </section>
 
+      {/* Ad Unit between sections */}
+      <div className="container mx-auto px-4 py-4">
+        <AdUnit format="horizontal" slot="2345678901" />
+      </div>
+
       {/* Paid Skateparks Preview */}
       <section className="py-12 px-4 bg-neutral" id="paid-preview">
         <div className="container mx-auto">
@@ -339,6 +344,11 @@ const Home = () => {
           </div>
         </div>
       </section>
+
+      {/* Ad Unit after gallery */}
+      <div className="container mx-auto px-4 py-4">
+        <AdUnit format="horizontal" slot="3456789012" />
+      </div>
 
       {/* Community Section */}
       <section className="py-12 px-4 bg-neutral relative overflow-hidden">

@@ -5,6 +5,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { SkateDivider } from "@/components/ui/skate-divider";
 import ParkCard from "@/components/ui/park-card";
 import SearchFilter from "@/components/ui/search-filter";
+import SEO from "@/components/ui/seo";
+import AdUnit from "@/components/ui/ad-unit";
 import { type Skatepark } from "@shared/schema";
 import { apiRequest } from "@/lib/queryClient";
 
