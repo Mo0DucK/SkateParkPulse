@@ -151,7 +151,7 @@ const NearbyParks = () => {
                               <h4 className="font-bold text-lg">{park.name}</h4>
                               <p className="text-sm text-muted-foreground">{park.city}, {park.state}</p>
                               <div className="flex gap-2 mt-2">
-                                <Badge variant={park.isFree ? "success" : "secondary"}>
+                                <Badge variant={park.isFree ? "default" : "secondary"} className={park.isFree ? "bg-green-500 hover:bg-green-600" : ""}>
                                   {park.isFree ? "Free" : "Paid"}
                                 </Badge>
                                 {park.features?.slice(0, 3).map((feature, i) => (
@@ -163,7 +163,7 @@ const NearbyParks = () => {
                               </div>
                             </div>
                             <Badge variant="outline" className="ml-auto">
-                              {typeof park.distance === 'number' ? `${park.distance.toFixed(1)} km` : 'Nearby'}
+                              {'distance' in park ? `${(park as any).distance.toFixed(1)} km` : 'Nearby'}
                             </Badge>
                           </div>
                         </CardContent>

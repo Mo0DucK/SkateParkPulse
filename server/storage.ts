@@ -6,6 +6,11 @@ import {
 import { db } from "./db";
 import { eq, like, or, and, inArray } from "drizzle-orm";
 
+// Extended type with distance property for nearby parks
+interface SkateparkWithDistance extends Skatepark {
+  distance: number;
+}
+
 export interface IStorage {
   getUser(id: number): Promise<User | undefined>;
   getUserByUsername(username: string): Promise<User | undefined>;
@@ -300,7 +305,7 @@ export class DatabaseStorage implements IStorage {
     return result;
   }
   
-  async getNearbyParks(latitude: number, longitude: number, radiusInKm: number = 50): Promise<Skatepark[]> {
+  async getNearbyParks(latitude: number, longitude: number, radiusInKm: number = 50): Promise<SkateparkWithDistance[]> {
     // Get all skateparks first
     const allParks = await this.getAllSkateparks();
     
@@ -319,7 +324,7 @@ export class DatabaseStorage implements IStorage {
         park.longitude as number
       );
       
-      return { ...park, distance };
+      return { ...park, distance } as SkateparkWithDistance;
     });
     
     // Filter parks within the radius
