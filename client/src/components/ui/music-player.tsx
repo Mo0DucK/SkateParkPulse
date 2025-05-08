@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { Volume2, VolumeX, SkipBack, SkipForward, Play, Pause, Music } from "lucide-react";
 import { useMusicPlayer } from "@/contexts/music-player-context";
 
@@ -36,7 +36,7 @@ interface MusicPlayerProps {
 }
 
 const MusicPlayer = ({ initialVolume = 30 }: MusicPlayerProps) => {
-  const { isPlayerEnabled, togglePlayerEnabled } = useMusicPlayer();
+  const { isPlayerEnabled } = useMusicPlayer();
   const [isOpen, setIsOpen] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(initialVolume);
@@ -46,62 +46,18 @@ const MusicPlayer = ({ initialVolume = 30 }: MusicPlayerProps) => {
   
   const audioRef = useRef<HTMLAudioElement | null>(null);
   
-  // Initialize the audio element
-  useEffect(() => {
-    if (!audioRef.current) {
-      audioRef.current = new Audio(musicPlaylist[currentTrackIndex].src);
-      audioRef.current.volume = volume / 100;
-      
-      // Set up event listeners for when a track ends
-      const handleTrackEnd = () => playNextTrack();
-      audioRef.current.addEventListener('ended', handleTrackEnd);
-      
-      // Cleanup function
-      return () => {
-        if (audioRef.current) {
-          audioRef.current.removeEventListener('ended', handleTrackEnd);
-          audioRef.current.pause();
-          audioRef.current = null;
-        }
-      };
-    }
+  // Define these functions first with useCallback to prevent unnecessary re-renders
+  const playNextTrack = useCallback(() => {
+    setCurrentTrackIndex(prevIndex => 
+      prevIndex === musicPlaylist.length - 1 ? 0 : prevIndex + 1
+    );
   }, []);
   
-  // Update volume when it changes
-  useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.volume = isMuted ? 0 : volume / 100;
-    }
-  }, [volume, isMuted]);
-  
-  // Play/pause functionality
-  useEffect(() => {
-    if (audioRef.current) {
-      if (isPlaying) {
-        audioRef.current.play().catch(error => {
-          console.error("Error playing audio:", error);
-          setIsPlaying(false);
-        });
-      } else {
-        audioRef.current.pause();
-      }
-    }
-  }, [isPlaying, currentTrackIndex]);
-  
-  // Change track when currentTrackIndex changes
-  useEffect(() => {
-    if (audioRef.current) {
-      audioRef.current.pause();
-      audioRef.current.src = musicPlaylist[currentTrackIndex].src;
-      audioRef.current.load();
-      if (isPlaying) {
-        audioRef.current.play().catch(error => {
-          console.error("Error playing audio:", error);
-          setIsPlaying(false);
-        });
-      }
-    }
-  }, [currentTrackIndex]);
+  const playPreviousTrack = useCallback(() => {
+    setCurrentTrackIndex(prevIndex => 
+      prevIndex === 0 ? musicPlaylist.length - 1 : prevIndex - 1
+    );
+  }, []);
   
   const togglePlayPause = () => {
     setIsPlaying(!isPlaying);
@@ -124,22 +80,66 @@ const MusicPlayer = ({ initialVolume = 30 }: MusicPlayerProps) => {
     setIsMuted(newVolume === 0);
   };
   
-  const playPreviousTrack = () => {
-    setCurrentTrackIndex(prevIndex => 
-      prevIndex === 0 ? musicPlaylist.length - 1 : prevIndex - 1
-    );
-  };
-  
-  // Define this function with useCallback to prevent unnecessary re-renders
-  const playNextTrack = useCallback(() => {
-    setCurrentTrackIndex(prevIndex => 
-      prevIndex === musicPlaylist.length - 1 ? 0 : prevIndex + 1
-    );
-  }, []);
-  
   const togglePlayer = () => {
     setIsOpen(!isOpen);
   };
+  
+  // Initialize the audio element
+  useEffect(() => {
+    if (!audioRef.current) {
+      audioRef.current = new Audio(musicPlaylist[currentTrackIndex].src);
+      audioRef.current.volume = volume / 100;
+      
+      // Set up event listeners for when a track ends
+      const handleTrackEnd = () => playNextTrack();
+      audioRef.current.addEventListener('ended', handleTrackEnd);
+      
+      // Cleanup function
+      return () => {
+        if (audioRef.current) {
+          audioRef.current.removeEventListener('ended', handleTrackEnd);
+          audioRef.current.pause();
+          audioRef.current = null;
+        }
+      };
+    }
+  }, [playNextTrack, currentTrackIndex, volume]);
+  
+  // Update volume when it changes
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.volume = isMuted ? 0 : volume / 100;
+    }
+  }, [volume, isMuted]);
+  
+  // Play/pause functionality
+  useEffect(() => {
+    if (audioRef.current) {
+      if (isPlaying) {
+        audioRef.current.play().catch(error => {
+          console.error("Error playing audio:", error);
+          setIsPlaying(false);
+        });
+      } else {
+        audioRef.current.pause();
+      }
+    }
+  }, [isPlaying]);
+  
+  // Change track when currentTrackIndex changes
+  useEffect(() => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+      audioRef.current.src = musicPlaylist[currentTrackIndex].src;
+      audioRef.current.load();
+      if (isPlaying) {
+        audioRef.current.play().catch(error => {
+          console.error("Error playing audio:", error);
+          setIsPlaying(false);
+        });
+      }
+    }
+  }, [currentTrackIndex, isPlaying]);
   
   const currentTrack = musicPlaylist[currentTrackIndex];
   
