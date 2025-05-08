@@ -1,4 +1,4 @@
-import { pgTable, text, serial, integer, boolean, timestamp, varchar } from "drizzle-orm/pg-core";
+import { pgTable, text, serial, integer, boolean, timestamp, varchar, doublePrecision } from "drizzle-orm/pg-core";
 import { createInsertSchema } from "drizzle-zod";
 import { z } from "zod";
 
@@ -30,6 +30,8 @@ export const skateparks = pgTable("skateparks", {
   rating: integer("rating").notNull().default(0),
   features: text("features").array().notNull(),
   isFeatured: boolean("isFeatured").default(false),
+  latitude: doublePrecision("latitude"),
+  longitude: doublePrecision("longitude"),
 });
 
 export const insertSkateparkSchema = createInsertSchema(skateparks).omit({
@@ -56,6 +58,8 @@ export const skateparkSubmissions = pgTable("skatepark_submissions", {
   submissionDate: timestamp("submission_date").defaultNow(),
   status: varchar("status", { length: 20 }).notNull().default("pending"), // pending, approved, rejected
   reviewNotes: text("review_notes"),
+  latitude: doublePrecision("latitude"),
+  longitude: doublePrecision("longitude"),
 });
 
 export const insertSkateparkSubmissionSchema = createInsertSchema(skateparkSubmissions).omit({

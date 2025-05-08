@@ -19,6 +19,7 @@ export interface IStorage {
   getFeaturedSkateparks(): Promise<Skatepark[]>;
   createSkatepark(skatepark: InsertSkatepark): Promise<Skatepark>;
   searchSkateparks(query: string, state?: string, features?: string[]): Promise<Skatepark[]>;
+  getNearbyParks(latitude: number, longitude: number, radiusInKm?: number): Promise<Skatepark[]>;
   
   // Skatepark submission methods
   getAllSkateparkSubmissions(): Promise<SkateparkSubmission[]>;
@@ -297,6 +298,57 @@ export class DatabaseStorage implements IStorage {
     }
 
     return result;
+  }
+  
+  async getNearbyParks(latitude: number, longitude: number, radiusInKm: number = 50): Promise<Skatepark[]> {
+    // Get all skateparks first
+    const allParks = await this.getAllSkateparks();
+    
+    // Filter parks that have latitude and longitude
+    const parksWithCoordinates = allParks.filter(
+      park => park.latitude !== null && park.longitude !== null
+    );
+    
+    // Calculate distance for each park with coordinates
+    const parksWithDistance = parksWithCoordinates.map(park => {
+      // Calculate distance using Haversine formula
+      const distance = this.calculateDistance(
+        latitude, 
+        longitude, 
+        park.latitude as number, 
+        park.longitude as number
+      );
+      
+      return { ...park, distance };
+    });
+    
+    // Filter parks within the radius
+    const nearbyParks = parksWithDistance
+      .filter(park => park.distance <= radiusInKm)
+      .sort((a, b) => a.distance - b.distance);
+      
+    return nearbyParks;
+  }
+  
+  // Haversine formula to calculate distance between two points on Earth
+  private calculateDistance(lat1: number, lon1: number, lat2: number, lon2: number): number {
+    const R = 6371; // Radius of the Earth in km
+    const dLat = this.deg2rad(lat2 - lat1);
+    const dLon = this.deg2rad(lon2 - lon1);
+    
+    const a = 
+      Math.sin(dLat/2) * Math.sin(dLat/2) +
+      Math.cos(this.deg2rad(lat1)) * Math.cos(this.deg2rad(lat2)) * 
+      Math.sin(dLon/2) * Math.sin(dLon/2);
+      
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    const distance = R * c; // Distance in km
+    
+    return distance;
+  }
+  
+  private deg2rad(deg: number): number {
+    return deg * (Math.PI/180);
   }
 
   // Skatepark submission methods

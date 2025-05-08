@@ -14,7 +14,9 @@ const initialSkateparks = [
     price: null,
     rating: 45,
     features: ["Bowl", "Street", "Beginner-Friendly"],
-    isFeatured: true
+    isFeatured: true,
+    latitude: 33.985698,
+    longitude: -118.473690
   },
   {
     name: "Vans Indoor Skatepark",
@@ -27,7 +29,9 @@ const initialSkateparks = [
     price: "$15/day",
     rating: 50,
     features: ["Vert", "Street", "Indoor"],
-    isFeatured: true
+    isFeatured: true,
+    latitude: 33.788281,
+    longitude: -117.853340
   },
   {
     name: "Burnside Skatepark",
@@ -40,7 +44,9 @@ const initialSkateparks = [
     price: null,
     rating: 40,
     features: ["Bowl", "Transition", "Advanced"],
-    isFeatured: false
+    isFeatured: false,
+    latitude: 45.523064,
+    longitude: -122.663802
   },
   {
     name: "LES Coleman Skatepark",
@@ -53,7 +59,9 @@ const initialSkateparks = [
     price: null,
     rating: 45,
     features: ["Street", "Urban", "All Levels"],
-    isFeatured: false
+    isFeatured: false,
+    latitude: 40.713348,
+    longitude: -73.992052
   },
   {
     name: "Denver Skatepark",
@@ -66,7 +74,9 @@ const initialSkateparks = [
     price: null,
     rating: 50,
     features: ["Bowl", "Street", "All Levels"],
-    isFeatured: false
+    isFeatured: false,
+    latitude: 39.752667,
+    longitude: -105.005935
   },
   {
     name: "Woodward West",
@@ -79,7 +89,9 @@ const initialSkateparks = [
     price: "$60/day or $299/week",
     rating: 50,
     features: ["Indoor", "Outdoor", "Training"],
-    isFeatured: false
+    isFeatured: false,
+    latitude: 35.130442,
+    longitude: -118.575226
   },
   {
     name: "The Berrics",
@@ -92,7 +104,9 @@ const initialSkateparks = [
     price: "$15/session",
     rating: 45,
     features: ["Street", "Indoor", "Pro"],
-    isFeatured: false
+    isFeatured: false,
+    latitude: 34.043409,
+    longitude: -118.217770
   }
 ];
 
@@ -121,7 +135,9 @@ export async function seedSkateparks() {
           price: park.price,
           rating: park.rating,
           features: park.features,
-          isFeatured: park.isFeatured
+          isFeatured: park.isFeatured,
+          latitude: park.latitude,
+          longitude: park.longitude
         });
       }
       

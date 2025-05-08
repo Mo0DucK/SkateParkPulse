@@ -89,6 +89,30 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  app.get("/api/skateparks/nearby", async (req, res) => {
+    try {
+      const { lat, lng, radius } = req.query;
+      
+      if (!lat || !lng) {
+        return res.status(400).json({ message: "Latitude and longitude are required" });
+      }
+      
+      const latitude = parseFloat(lat as string);
+      const longitude = parseFloat(lng as string);
+      const radiusInKm = radius ? parseFloat(radius as string) : 50; // Default 50km
+      
+      if (isNaN(latitude) || isNaN(longitude) || isNaN(radiusInKm)) {
+        return res.status(400).json({ message: "Invalid coordinates or radius" });
+      }
+      
+      const nearbyParks = await storage.getNearbyParks(latitude, longitude, radiusInKm);
+      res.json(nearbyParks);
+    } catch (error) {
+      console.error("Error finding nearby skateparks:", error);
+      res.status(500).json({ message: "Failed to find nearby skateparks" });
+    }
+  });
+
   // Skatepark submissions API endpoints
   app.post("/api/submit-skatepark", async (req, res) => {
     try {
