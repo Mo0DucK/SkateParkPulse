@@ -1,4 +1,10 @@
-import { users, type User, type InsertUser, skateparks, type Skatepark, type InsertSkatepark } from "@shared/schema";
+import { 
+  users, type User, type InsertUser, 
+  skateparks, type Skatepark, type InsertSkatepark,
+  skateparkSubmissions, type SkateparkSubmission, type InsertSkateparkSubmission
+} from "@shared/schema";
+import { db } from "./db";
+import { eq, like, or, and, inArray } from "drizzle-orm";
 
 export interface IStorage {
   getUser(id: number): Promise<User | undefined>;
@@ -13,9 +19,18 @@ export interface IStorage {
   getFeaturedSkateparks(): Promise<Skatepark[]>;
   createSkatepark(skatepark: InsertSkatepark): Promise<Skatepark>;
   searchSkateparks(query: string, state?: string, features?: string[]): Promise<Skatepark[]>;
+  
+  // Skatepark submission methods
+  getAllSkateparkSubmissions(): Promise<SkateparkSubmission[]>;
+  getSkateparkSubmissionById(id: number): Promise<SkateparkSubmission | undefined>;
+  createSkateparkSubmission(submission: InsertSkateparkSubmission): Promise<SkateparkSubmission>;
+  updateSkateparkSubmissionStatus(id: number, status: string, reviewNotes?: string): Promise<SkateparkSubmission | undefined>;
+  getPendingSkateparkSubmissions(): Promise<SkateparkSubmission[]>;
 }
 
-export class MemStorage implements IStorage {
+// This is the old in-memory storage class, kept for reference
+// We're now using DatabaseStorage instead
+export class MemStorage {
   private users: Map<number, User>;
   private skateparksMap: Map<number, Skatepark>;
   private currentUserId: number;
@@ -203,4 +218,124 @@ export class MemStorage implements IStorage {
   }
 }
 
-export const storage = new MemStorage();
+// DatabaseStorage implementation using PostgreSQL
+export class DatabaseStorage implements IStorage {
+  // User methods
+  async getUser(id: number): Promise<User | undefined> {
+    const result = await db.select().from(users).where(eq(users.id, id));
+    return result[0];
+  }
+
+  async getUserByUsername(username: string): Promise<User | undefined> {
+    const result = await db.select().from(users).where(eq(users.username, username));
+    return result[0];
+  }
+
+  async createUser(insertUser: InsertUser): Promise<User> {
+    const result = await db.insert(users).values(insertUser).returning();
+    return result[0];
+  }
+
+  // Skatepark methods
+  async getAllSkateparks(): Promise<Skatepark[]> {
+    return await db.select().from(skateparks);
+  }
+
+  async getSkateparkById(id: number): Promise<Skatepark | undefined> {
+    const result = await db.select().from(skateparks).where(eq(skateparks.id, id));
+    return result[0];
+  }
+
+  async getFreeSkateparks(): Promise<Skatepark[]> {
+    return await db.select().from(skateparks).where(eq(skateparks.isFree, true));
+  }
+
+  async getPaidSkateparks(): Promise<Skatepark[]> {
+    return await db.select().from(skateparks).where(eq(skateparks.isFree, false));
+  }
+
+  async getFeaturedSkateparks(): Promise<Skatepark[]> {
+    return await db.select().from(skateparks).where(eq(skateparks.isFeatured, true));
+  }
+
+  async createSkatepark(skatepark: InsertSkatepark): Promise<Skatepark> {
+    const result = await db.insert(skateparks).values(skatepark).returning();
+    return result[0];
+  }
+
+  async searchSkateparks(query: string, state?: string, features?: string[]): Promise<Skatepark[]> {
+    let baseQuery = db.select().from(skateparks);
+    const conditions = [];
+
+    if (query) {
+      conditions.push(
+        or(
+          like(skateparks.name, `%${query}%`),
+          like(skateparks.description, `%${query}%`),
+          like(skateparks.city, `%${query}%`)
+        )
+      );
+    }
+
+    if (state) {
+      conditions.push(eq(skateparks.state, state));
+    }
+
+    // Apply the conditions if there are any
+    if (conditions.length > 0) {
+      baseQuery = baseQuery.where(and(...conditions));
+    }
+
+    // Execute the query
+    const result = await baseQuery;
+    
+    // Filter by features if needed (done in-memory because array filtering in SQL is complex)
+    if (features && features.length > 0) {
+      return result.filter(park => 
+        features.some(feature => park.features.includes(feature))
+      );
+    }
+
+    return result;
+  }
+
+  // Skatepark submission methods
+  async getAllSkateparkSubmissions(): Promise<SkateparkSubmission[]> {
+    return await db.select().from(skateparkSubmissions);
+  }
+
+  async getSkateparkSubmissionById(id: number): Promise<SkateparkSubmission | undefined> {
+    const result = await db.select().from(skateparkSubmissions).where(eq(skateparkSubmissions.id, id));
+    return result[0];
+  }
+
+  async createSkateparkSubmission(submission: InsertSkateparkSubmission): Promise<SkateparkSubmission> {
+    const result = await db.insert(skateparkSubmissions).values(submission).returning();
+    return result[0];
+  }
+
+  async updateSkateparkSubmissionStatus(id: number, status: string, reviewNotes?: string): Promise<SkateparkSubmission | undefined> {
+    const updateData: any = { status };
+    if (reviewNotes) {
+      updateData.reviewNotes = reviewNotes;
+    }
+
+    const result = await db
+      .update(skateparkSubmissions)
+      .set(updateData)
+      .where(eq(skateparkSubmissions.id, id))
+      .returning();
+    
+    return result[0];
+  }
+
+  async getPendingSkateparkSubmissions(): Promise<SkateparkSubmission[]> {
+    return await db
+      .select()
+      .from(skateparkSubmissions)
+      .where(eq(skateparkSubmissions.status, "pending"));
+  }
+}
+
+// Use DatabaseStorage
+export const storage = new DatabaseStorage();
