@@ -96,7 +96,7 @@ const Home = () => {
               Find The <span className="text-primary">Best</span> Skateparks<br/>
               Across The USA
             </h1>
-            <p className="text-lg md:text-xl text-white mb-8 max-w-2xl">
+            <p className="text-lg md:text-xl text-accent mb-8 max-w-2xl font-semibold">
               Your ultimate guide to shredding the best concrete waves from coast to coast.
               Discover hidden gems, legendary spots, and local favorites.
             </p>
