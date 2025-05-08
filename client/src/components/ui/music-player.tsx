@@ -53,21 +53,18 @@ const MusicPlayer = ({ initialVolume = 30 }: MusicPlayerProps) => {
       audioRef.current.volume = volume / 100;
       
       // Set up event listeners for when a track ends
-      audioRef.current.addEventListener('ended', () => {
-        playNextTrack();
-      });
+      const handleTrackEnd = () => playNextTrack();
+      audioRef.current.addEventListener('ended', handleTrackEnd);
+      
+      // Cleanup function
+      return () => {
+        if (audioRef.current) {
+          audioRef.current.removeEventListener('ended', handleTrackEnd);
+          audioRef.current.pause();
+          audioRef.current = null;
+        }
+      };
     }
-    
-    // Cleanup event listeners
-    return () => {
-      if (audioRef.current) {
-        audioRef.current.removeEventListener('ended', () => {
-          playNextTrack();
-        });
-        audioRef.current.pause();
-        audioRef.current = null;
-      }
-    };
   }, []);
   
   // Update volume when it changes
@@ -133,11 +130,12 @@ const MusicPlayer = ({ initialVolume = 30 }: MusicPlayerProps) => {
     );
   };
   
-  const playNextTrack = () => {
+  // Define this function with useCallback to prevent unnecessary re-renders
+  const playNextTrack = useCallback(() => {
     setCurrentTrackIndex(prevIndex => 
       prevIndex === musicPlaylist.length - 1 ? 0 : prevIndex + 1
     );
-  };
+  }, []);
   
   const togglePlayer = () => {
     setIsOpen(!isOpen);

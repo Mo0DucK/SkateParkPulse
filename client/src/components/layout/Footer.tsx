@@ -1,7 +1,11 @@
 import { Link } from "wouter";
 import { SkateDivider } from "@/components/ui/skate-divider";
+import { Music, VolumeX } from "lucide-react";
+import { useMusicPlayer } from "@/contexts/music-player-context";
 
 const Footer = () => {
+  const { isPlayerEnabled, togglePlayerEnabled } = useMusicPlayer();
+  
   return (
     <footer className="bg-dark text-white pt-12 pb-6 px-4">
       <div className="container mx-auto">
@@ -113,6 +117,26 @@ const Footer = () => {
             <a href="#" className="hover:text-primary transition-colors">Privacy Policy</a>
             <a href="#" className="hover:text-primary transition-colors">Terms of Service</a>
             <a href="#" className="hover:text-primary transition-colors">Cookie Policy</a>
+          </div>
+          
+          <div className="mt-4 flex justify-center">
+            <button 
+              onClick={togglePlayerEnabled}
+              className="flex items-center space-x-2 px-3 py-1 rounded-full bg-primary bg-opacity-20 text-primary hover:bg-opacity-30 transition-colors"
+              aria-label={isPlayerEnabled ? "Disable music player" : "Enable music player"}
+            >
+              {isPlayerEnabled ? (
+                <>
+                  <Music size={16} />
+                  <span className="text-xs">Music On</span>
+                </>
+              ) : (
+                <>
+                  <VolumeX size={16} />
+                  <span className="text-xs">Music Off</span>
+                </>
+              )}
+            </button>
           </div>
         </div>
       </div>
