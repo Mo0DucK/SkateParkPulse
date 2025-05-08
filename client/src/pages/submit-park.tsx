@@ -41,6 +41,12 @@ const formSchema = insertSkateparkSubmissionSchema.extend({
   address: z.string().min(5, "Address must be at least 5 characters"),
   city: z.string().min(2, "City must be at least 2 characters"),
   state: z.string().min(2, "Please select a state"),
+  imageUrl: z.union([
+    z.string().url("Please enter a valid image URL").includes(["http", ".jpg", ".jpeg", ".png", ".webp"], {
+      message: "Please enter a valid image URL (must be a direct link to a JPG, JPEG, PNG or WEBP file)"
+    }),
+    z.string().max(0)
+  ]).optional().nullable(),
 });
 
 export default function SubmitPark() {

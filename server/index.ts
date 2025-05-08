@@ -1,6 +1,7 @@
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
+import { seedSkateparks } from "./seed";
 
 const app = express();
 app.use(express.json());
@@ -37,6 +38,15 @@ app.use((req, res, next) => {
 });
 
 (async () => {
+  try {
+    // Seed database with initial skateparks
+    await seedSkateparks();
+    console.log("Database seeding completed");
+  } catch (error) {
+    console.error("Error seeding database:", error);
+    // Continue execution, don't crash the server
+  }
+
   const server = await registerRoutes(app);
 
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
