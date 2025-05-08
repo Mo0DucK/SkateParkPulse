@@ -4,6 +4,8 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { SkateDivider } from "@/components/ui/skate-divider";
 import ParkCard from "@/components/ui/park-card";
 import SearchFilter from "@/components/ui/search-filter";
+import AdUnit from "@/components/ui/ad-unit";
+import SEO from "@/components/ui/seo";
 import { type Skatepark } from "@shared/schema";
 
 const Home = () => {
@@ -31,8 +33,54 @@ const Home = () => {
     window.location.href = `/free-parks?${searchParams.toString()}`;
   };
 
+  // Create structured data for the website
+  const websiteStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "RadRamps - Best Skateparks in the USA",
+    "url": "https://radramps.com",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": {
+        "@type": "EntryPoint",
+        "urlTemplate": "https://radramps.com/free-parks?q={search_term_string}"
+      },
+      "query-input": "required name=search_term_string"
+    },
+    "description": "Discover the best skateparks across the United States with RadRamps. Find free and paid skateparks with detailed information about features, locations, and ratings."
+  };
+
+  // Create structured data for organization
+  const organizationStructuredData = {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "RadRamps",
+    "url": "https://radramps.com",
+    "logo": "https://radramps.com/logo.png",
+    "sameAs": [
+      "https://instagram.com/radramps",
+      "https://twitter.com/radramps",
+      "https://youtube.com/radramps"
+    ],
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "telephone": "",
+      "contactType": "customer service",
+      "email": "info@radramps.com"
+    }
+  };
+
+  // Combined structured data
+  const structuredData = [websiteStructuredData, organizationStructuredData];
+
   return (
     <>
+      {/* SEO Component */}
+      <SEO 
+        title="Best Skateparks in the USA"
+        description="Discover the best skateparks across the United States with RadRamps. Find free and paid skateparks with detailed information about features, locations, and ratings."
+        structuredData={structuredData}
+      />
       {/* Hero Section */}
       <div 
         className="relative h-[80vh] overflow-hidden bg-cover bg-center" 
@@ -75,6 +123,11 @@ const Home = () => {
 
       {/* Search Section */}
       <SearchFilter onSearch={handleSearch} />
+      
+      {/* Ad Unit after search */}
+      <div className="container mx-auto px-4">
+        <AdUnit format="horizontal" slot="1234567890" />
+      </div>
 
       {/* Featured Parks Section */}
       <section className="py-12 px-4 bg-neutral" id="featured">

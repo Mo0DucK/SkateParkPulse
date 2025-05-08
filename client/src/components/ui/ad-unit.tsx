@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 import { cn } from "@/lib/utils";
 
 interface AdUnitProps {
@@ -8,13 +8,14 @@ interface AdUnitProps {
 }
 
 const AdUnit = ({ className, format = "horizontal", slot = "0000000000" }: AdUnitProps) => {
-  const adRef = useRef<HTMLDivElement | null>(null);
-  
   useEffect(() => {
     // Load ad when component mounts
     try {
-      if (window.adsbygoogle && adRef.current) {
-        (window.adsbygoogle = window.adsbygoogle || []).push({});
+      const adElements = document.querySelectorAll('.adsbygoogle');
+      if (window.adsbygoogle && adElements.length > 0) {
+        for (let i = 0; i < adElements.length; i++) {
+          (window.adsbygoogle = window.adsbygoogle || []).push({});
+        }
       }
     } catch (e) {
       console.error("Error loading AdSense ad:", e);
@@ -22,7 +23,7 @@ const AdUnit = ({ className, format = "horizontal", slot = "0000000000" }: AdUni
   }, []);
   
   // Define ad sizes based on format
-  const getAdSize = () => {
+  const getAdStyle = () => {
     switch (format) {
       case "horizontal":
         return { minHeight: "90px", width: "100%" };
@@ -40,12 +41,11 @@ const AdUnit = ({ className, format = "horizontal", slot = "0000000000" }: AdUni
       <div className="text-xs text-center text-gray-500 py-1 bg-gray-100">Advertisement</div>
       <ins
         className="adsbygoogle"
-        style={{ display: "block", ...getAdSize() }}
+        style={{ display: "block", ...getAdStyle() }}
         data-ad-client="ca-pub-0000000000000000"
         data-ad-slot={slot}
         data-ad-format="auto"
         data-full-width-responsive="true"
-        ref={adRef as any}
       />
     </div>
   );

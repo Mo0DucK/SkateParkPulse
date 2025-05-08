@@ -30,10 +30,13 @@ const SEO = ({ title, description, canonicalPath, structuredData }: SEOProps) =>
     
     // Add structured data
     if (structuredData) {
-      let script = document.querySelector('#structured-data') as HTMLScriptElement | null;
+      // Check for existing script tag
+      let script = document.querySelector('#structured-data');
+      
       if (script) {
         script.textContent = JSON.stringify(structuredData);
       } else {
+        // Create new script element
         script = document.createElement('script');
         script.id = 'structured-data';
         script.setAttribute('type', 'application/ld+json');
