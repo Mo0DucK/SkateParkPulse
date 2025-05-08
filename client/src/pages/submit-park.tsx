@@ -72,8 +72,53 @@ export default function SubmitPark() {
       isFree: true,
       price: "",
       features: [],
+      latitude: null,
+      longitude: null,
     },
   });
+  
+  // Function to get user's current location
+  const getUserLocation = () => {
+    if (!navigator.geolocation) {
+      setLocationError("Geolocation is not supported by your browser");
+      return;
+    }
+    
+    setLocationLoading(true);
+    setLocationError(null);
+    
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        form.setValue("latitude", latitude);
+        form.setValue("longitude", longitude);
+        setLocationLoading(false);
+        
+        toast({
+          title: "Location detected",
+          description: `Coordinates: ${latitude.toFixed(6)}, ${longitude.toFixed(6)}`,
+        });
+      },
+      (error) => {
+        setLocationLoading(false);
+        switch (error.code) {
+          case error.PERMISSION_DENIED:
+            setLocationError("Location permission denied");
+            break;
+          case error.POSITION_UNAVAILABLE:
+            setLocationError("Location information is unavailable");
+            break;
+          case error.TIMEOUT:
+            setLocationError("Location request timed out");
+            break;
+          default:
+            setLocationError("An unknown error occurred");
+            break;
+        }
+      },
+      { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
+    );
+  };
 
   // Submission mutation
   const mutation = useMutation({
@@ -249,6 +294,78 @@ export default function SubmitPark() {
                             </FormItem>
                           )}
                         />
+                        
+                        <div className="space-y-2">
+                          <div className="flex justify-between items-center">
+                            <h4 className="text-sm font-medium">Location Coordinates</h4>
+                            <Button 
+                              type="button" 
+                              variant="outline" 
+                              size="sm"
+                              onClick={getUserLocation}
+                              disabled={locationLoading}
+                              className="flex items-center gap-2"
+                            >
+                              {locationLoading ? <Loader2 className="h-4 w-4 animate-spin" /> : <MapPin className="h-4 w-4" />}
+                              {locationLoading ? "Detecting..." : "Get Current Location"}
+                            </Button>
+                          </div>
+                          
+                          {locationError && (
+                            <Alert variant="destructive" className="py-2">
+                              <AlertDescription className="text-sm">{locationError}</AlertDescription>
+                            </Alert>
+                          )}
+                          
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <FormField
+                              control={form.control}
+                              name="latitude"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>Latitude</FormLabel>
+                                  <FormControl>
+                                    <Input 
+                                      placeholder="33.985698" 
+                                      {...field} 
+                                      value={field.value === null ? "" : field.value}
+                                      onChange={(e) => {
+                                        const value = e.target.value;
+                                        field.onChange(value === "" ? null : parseFloat(value));
+                                      }}
+                                    />
+                                  </FormControl>
+                                  <FormDescription className="text-xs">
+                                    Use "Get Current Location" or enter manually
+                                  </FormDescription>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                            
+                            <FormField
+                              control={form.control}
+                              name="longitude"
+                              render={({ field }) => (
+                                <FormItem>
+                                  <FormLabel>Longitude</FormLabel>
+                                  <FormControl>
+                                    <Input 
+                                      placeholder="-118.473690" 
+                                      {...field} 
+                                      value={field.value === null ? "" : field.value}
+                                      onChange={(e) => {
+                                        const value = e.target.value;
+                                        field.onChange(value === "" ? null : parseFloat(value));
+                                      }}
+                                    />
+                                  </FormControl>
+                                  <FormMessage />
+                                </FormItem>
+                              )}
+                            />
+                          </div>
+                        </div>
                         
                         <FormField
                           control={form.control}

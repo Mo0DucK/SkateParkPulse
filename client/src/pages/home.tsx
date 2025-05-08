@@ -7,6 +7,7 @@ import SearchFilter from "@/components/ui/search-filter";
 import AdUnit from "@/components/ui/ad-unit";
 import SEO from "@/components/ui/seo";
 import { type Skatepark } from "@shared/schema";
+import NearbyParks from "@/components/ui/nearby-parks";
 
 const Home = () => {
   const { data: featuredParks, isLoading: featuredLoading } = useQuery<Skatepark[]>({
@@ -349,6 +350,19 @@ const Home = () => {
       <div className="container mx-auto px-4 py-4">
         <AdUnit format="horizontal" slot="3456789012" />
       </div>
+
+      {/* Nearby Parks Section */}
+      <section className="py-12 px-4 bg-white">
+        <div className="container mx-auto">
+          <div className="flex items-center mb-10">
+            <div className="mr-4 h-1 flex-grow bg-accent"></div>
+            <h2 className="text-3xl font-heading text-secondary uppercase">Skateparks Near You</h2>
+            <div className="ml-4 h-1 flex-grow bg-accent"></div>
+          </div>
+          
+          <NearbyParks />
+        </div>
+      </section>
 
       {/* Community Section */}
       <section className="py-12 px-4 bg-neutral relative overflow-hidden">
