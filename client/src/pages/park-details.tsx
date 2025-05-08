@@ -273,6 +273,11 @@ const ParkDetails = () => {
               </div>
             </div>
           </section>
+
+          {/* Ad Unit at page bottom */}
+          <div className="container mx-auto px-4 py-8">
+            <AdUnit format="horizontal" slot="2345678901" />
+          </div>
         </>
       )}
     </>
